@@ -1,0 +1,49 @@
+dashboardMetricsScraper:
+  dashboardMetricsScraper:
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      runAsGroup: 2001
+      runAsUser: 1001
+    image:
+      repository: kubernetesui/metrics-scraper
+      tag: v1.0.6
+  nodeSelector:
+    kubernetes.io/os: linux
+  ports:
+  - port: 8000
+    targetPort: 8000
+  replicas: 1
+  type: ClusterIP
+kubernetesClusterDomain: cluster.local
+kubernetesDashboard:
+  kubernetesDashboard:
+    args:
+    - --auto-generate-certificates
+    - --namespace=kubernetes-dashboard
+    - --tls-cert-file=##CERT##
+    - --tls-key-file=##KEY##
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      runAsGroup: 2001
+      runAsUser: 1001
+    image:
+      repository: kubernetesui/dashboard
+      tag: v2.0.5
+    imagePullPolicy: Always
+  nodeSelector:
+    kubernetes.io/os: linux
+  ports:
+  - port: 443
+    targetPort: 8443
+  replicas: 1
+  serviceAccount:
+    annotations: {}
+  type: NodePort
+kubernetesDashboardCsrf:
+  csrf: ""
+test1:
+  kubernetesDashboardCsrf:
+    app: v1
+    version: "2"
