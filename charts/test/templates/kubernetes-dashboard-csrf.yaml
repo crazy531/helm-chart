@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "test.fullname" . }}-kubernetes-dashboard-csrf
+  labels:
+    k8s-app: kubernetes-dashboard
+  {{- include "test.labels" . | nindent 4 }}
+data:
+  csrf: {{ if .Values.kubernetesDashboardCsrf.csrf  }}
+{{- required "kubernetesDashboardCsrf.csrf is required" .Values.kubernetesDashboardCsrf.csrf
+    | b64enc | quote }}
+{{- else }} 
+{{-  .Values.kubernetesDashboardCsrf.csrf | quote  }}
+{{ end }}
+type: Opaque

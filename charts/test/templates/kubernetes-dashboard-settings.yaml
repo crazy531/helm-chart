@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "test.fullname" . }}-kubernetes-dashboard-settings
+  labels:
+    k8s-app: kubernetes-dashboard
+  {{- include "test.labels" . | nindent 4 }}

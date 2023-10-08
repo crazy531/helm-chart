@@ -1,0 +1,99 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "test.fullname" . }}-kubernetes-dashboard
+  labels:
+    k8s-app: kubernetes-dashboard
+  {{- include "test.labels" . | nindent 4 }}
+rules:
+- apiGroups:
+  - ""
+  resourceNames:
+  - kubernetes-dashboard-key-holder
+  - kubernetes-dashboard-certs
+  - kubernetes-dashboard-csrf
+  resources:
+  - secrets
+  verbs:
+  - get
+  - update
+  - delete
+- apiGroups:
+  - ""
+  resourceNames:
+  - kubernetes-dashboard-settings
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - update
+- apiGroups:
+  - ""
+  resourceNames:
+  - heapster
+  - dashboard-metrics-scraper
+  resources:
+  - services
+  verbs:
+  - proxy
+- apiGroups:
+  - ""
+  resourceNames:
+  - heapster
+  - 'http:heapster:'
+  - 'https:heapster:'
+  - dashboard-metrics-scraper
+  - http:dashboard-metrics-scraper
+  resources:
+  - services/proxy
+  verbs:
+  - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "test.fullname" . }}-kubernetes-dashboard
+  labels:
+    k8s-app: kubernetes-dashboard
+  {{- include "test.labels" . | nindent 4 }}
+rules:
+- apiGroups:
+  - metrics.k8s.io
+  resources:
+  - pods
+  - nodes
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "test.fullname" . }}-kubernetes-dashboard
+  labels:
+    k8s-app: kubernetes-dashboard
+  {{- include "test.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: '{{ include "test.fullname" . }}-kubernetes-dashboard'
+subjects:
+- kind: ServiceAccount
+  name: '{{ include "test.fullname" . }}-kubernetes-dashboard'
+  namespace: '{{ .Release.Namespace }}'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "test.fullname" . }}-kubernetes-dashboard
+  labels:
+  {{- include "test.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: '{{ include "test.fullname" . }}-kubernetes-dashboard'
+subjects:
+- kind: ServiceAccount
+  name: '{{ include "test.fullname" . }}-kubernetes-dashboard'
+  namespace: '{{ .Release.Namespace }}'
