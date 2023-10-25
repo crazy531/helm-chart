@@ -26,6 +26,8 @@ on:
       skip_existing:
         description: "Skip package upload if release exists"
         required: false
+        default: true
+        type: string
       mark_as_latest:
         description: Mark the created GitHub release as 'latest'
         required: false
@@ -72,7 +74,7 @@ jobs:
           chartsdir="${{ inputs.charts_dir}}"
           args=(--owner "$owner" --repo "$repo")
           args+=(--charts-dir ${chartsdir:-'charts'})
-            
+          args+=(--skip-existing true )
           if [[ -n "${{ inputs.version }}" ]]; then
               args+=(--version "${{ inputs.version}}")
           else 
