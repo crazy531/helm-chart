@@ -69,9 +69,9 @@ jobs:
         run: |
           owner=$(cut -d '/' -f 1 <<< "$GITHUB_REPOSITORY")
           repo=$(cut -d '/' -f 2 <<< "$GITHUB_REPOSITORY")
-          charts-dir="${{ inputs.charts_dir}}"
+          chartsdir="${{ inputs.charts_dir}}"
           args=(--owner "$owner" --repo "$repo")
-          args+=(--charts-dir "${ charts-dir:-'charts'}")
+          args+=(--charts-dir ${ chartsdir:-'charts'})
             
           if [[ -n "${{ inputs.version }}" ]]; then
               args+=(--version "${{ inputs.version}}")
