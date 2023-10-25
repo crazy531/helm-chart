@@ -71,10 +71,10 @@ jobs:
           repo=$(cut -d '/' -f 2 <<< "$GITHUB_REPOSITORY")
   
           args=(--owner "$owner" --repo "$repo")
-          args+=(--charts-dir "${{ inputs.charts_dir }}")
+          args+=(--charts-dir "${{ inputs.charts_dir:-"charts" }}")
   
           if [[ -n "${{ inputs.version }}" ]]; then
-              args+=(--version "${{ inputs.version }}")
+              args+=(--version "${{ inputs.version:-"v1.6.0" }}")
           fi
   
           if [[ -n "${{ inputs.config }}" ]]; then
@@ -103,7 +103,7 @@ jobs:
           fi
   
           if [[ -n "${{ inputs.mark_as_latest }}" ]]; then
-              args+=(--mark-as-latest "${{ inputs.mark_as_latest }}")
+              args+=(--mark-as-latest "${{ inputs.mark_as_latest:-"true" }}")
           fi
   
           if [[ -n "${{ inputs.packages_with_index }}" ]]; then
@@ -125,3 +125,4 @@ jobs:
           fi
           rm -f changed_charts.txt 
         shell: bash
+
