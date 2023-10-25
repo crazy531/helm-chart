@@ -40,6 +40,7 @@ on:
   push:
      branches:
        - main
+       - gh-pages
         
 env:
  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -113,7 +114,8 @@ jobs:
               args+=(--pages-branch "${{ inputs.pages_branch }}")
           fi
           ls -la .
-          "$GITHUB_ACTION_PATH/cr.sh" "${args[@]}"
+          echo ${args[@]}
+          "./cr.sh" "${args[@]}"
   
           if [[ -f changed_charts.txt ]]; then
               cat changed_charts.txt >> "$GITHUB_OUTPUT"
