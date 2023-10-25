@@ -129,4 +129,6 @@ jobs:
           fi
           rm -f changed_charts.txt 
         shell: bash
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
