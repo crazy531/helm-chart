@@ -112,7 +112,7 @@ jobs:
           if [[ -n "${{ inputs.pages_branch }}" ]]; then
               args+=(--pages-branch "${{ inputs.pages_branch }}")
           fi
-  
+          ls -la .
           "$GITHUB_ACTION_PATH/cr.sh" "${args[@]}"
   
           if [[ -f changed_charts.txt ]]; then
