@@ -30,6 +30,7 @@ on:
         description: Mark the created GitHub release as 'latest'
         required: false
         default: true
+        type: string
       packages_with_index:
         description: "Upload chart packages directly into publishing branch"
         required: false
